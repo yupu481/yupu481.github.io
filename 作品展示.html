@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棫朴 · 诗性主义</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #e94560;
+            --text-color: #f1f1f1;
+            --muted-text: #a9a9a9;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--primary-color), #0f3460);
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: var(--transition);
+        }
+        
+        .author-info {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .author-name {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            letter-spacing: 5px;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: var(--accent-color);
+        }
+        
+        .author-desc {
+            font-size: 1rem;
+            color: var(--muted-text);
+            line-height: 1.7;
+            margin-top: 1rem;
+        }
+        
+        .nav-links {
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-bottom: 1.2rem;
+        }
+        
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(233, 69, 96, 0.2);
+            color: var(--accent-color);
+        }
+        
+        .nav-links i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .copyright {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--muted-text);
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 3rem 4rem;
+        }
+        
+        .section {
+            margin-bottom: 4rem;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            font-weight: 400;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+        
+        /* 作品网格 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        
+        .work-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.2);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            background: rgba(22, 33, 62, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .work-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .work-date {
+            color: var(--muted-text);
+            font-size: 0.9rem;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .work-excerpt {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            position: relative;
+        }
+        
+        .work-excerpt::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-color);
+            opacity: 0.7;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-top: auto;
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover i {
+            transform: translateX(3px);
+        }
+        
+        /* 诗歌阅读器 */
+        .poem-reader {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .poem-reader::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-color);
+        }
+        
+        .poem-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .poem-subtitle {
+            font-size: 1.1rem;
+            color: var(--muted-text);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        
+        .poem-content {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            white-space: pre-line;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            width: calc(50% - 40px);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: calc(50% + 40px);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            top: 15px;
+            right: -60px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -60px;
+            right: auto;
+        }
+        
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timeline-year {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-excerpt {
+            color: var(--muted-text);
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left极: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--primary-color);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-poem-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .modal-poem-date {
+            color: var(--muted-text);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .modal-poem-content {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            white-space: pre-line;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 240px;
+                padding: 1.5rem 1rem;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1.5rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+            }
+            
+            .copyright {
+                position: relative;
+                margin-top: 2rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+                right: auto;
+            }
+            
+            .modal-content {
+                width: 90%;
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .poem-reader {
+                padding: 1.5rem;
+            }
+            
+            .author-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+        <div class="author-info">
+            <h1 class="author-name">棫朴</h1>
+            <p class="author-desc">以文字捕捉瞬间，用诗性凝固永恒。在现实与梦幻的边界，构建灵魂栖息之所。</p>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#" class="active" data-target="home"><i class="fas fa-home"></i> 首页</a></li>
+            <li><a href="#" data-target="featured"><i class="fas fa-star"></i> 精选作品</a></li>
+            <li><a href="#" data-target="poetry"><i class="fas fa-pen-nib"></i> 现代诗歌</a></li>
+            <li><a href="#" data-target="classical"><i class="fas fa-feather"></i> 古体诗词</a></li>
+            <li><a href="#" data-target="timeline"><i class="fas fa-history"></i> 创作年表</a></li>
+            <li><a href="#" data-target="about"><i class="fas fa-user"></i> 关于棫朴</a></li>
+        </ul>
+        
+        <div class="copyright">
+            &copy; 2025 棫朴 · 版权所有
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="section active">
+            <h2 class="section-title">诗性主义</h2>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">伊卡诺斯</h3>
+                <span class="poem-subtitle">自由与沉沦之诗</span>
+                <div class="poem-content">
+蔚蓝的天空是曾向往的自由，
+为我编织的洁白的翅翼，
+乘风遨游
+
+金黄撒遍柔软的羽毛
+阳光与心一同颤动
+穹顶和曾经
+桎梏和幻梦
+
+迎向热忱的拥抱
+无限的接近
+怎样去触碰？
+
+烈火在胸腔燃烧
+炙烤着每一滴血液
+眼中闪烁着鲜红
+干涸了所有的泪水
+
+风的支离
+浪不停息
+
+拥抱还是裹挟
+羽毛从身躯凋落
+全身被粉碎
+同破灭的梦
+
+海融入泪水
+血融入深渊
+
+就这样走向冰冷的永恒
+                </div>
+            </div>
+            
+            <div class="works-grid">
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">起航，起航</h3>
+                        <div class="work-date">2024年6月7日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+起航起航
+等我拿起我的行装
+等我带上透过蓝色玻璃看到的碎瓦墙
+
+不行不行
+我们马上就要起航
+等我带上水磨石的地砖(被拖的锃亮)
+等我留下门口浅浅的水渠(它不再流淌)
+                        </div>
+                        <a href="#" class="read-more" data-title="起航，起航" data-date="2024年6月7日" data-content="起航起航
+等我拿起我的行装
+等我带上透过蓝色玻璃看到的碎瓦墙
+
+不行不行
+我们马上就要起航
+等我带上水磨石的地砖（被拖的锃亮）
+等我留下门口浅浅的水渠（它不再流淌）
+
+快点快点
+我们马上就要起航
+等我再看眼红色的涂鸦（就那几张）
+等我再看眼阁楼和床头的玩具堆满床
+
+我什么都没能带上
+让我看看哪里是你们的黄金乡
+哪里是你们的黄金乡
+">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">钴蓝色舞曲</h3>
+                        <div class="work-date">2023年4月13日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+日食的那天是亲戚的葬礼
+从此知道了死亡
+在墙上的相框里
+望见被框住的自己
+
+第一首诗献给放学路上的雨
+靛黑的墨水涂上傍晚的天空
+灌满没有笔夹的自来水笔
+                        </div>
+                        <a href="#" class="read-more" data-title="钴蓝色舞曲" data-date="2023年4月13日" data-content="日食的那天是亲戚的葬礼
+从此知道了死亡
+在墙上的相框里
+望见被框住的自己
+
+第一首诗献给放学路上的雨
+靛黑的墨水涂上傍晚的天空
+灌满没有笔夹的自来水笔
+
+三楼的书房对着三楼的窗
+透过钴蓝的玻璃吸引我的目光
+阳光蒙上模糊的眼翳
+
+门口是两把木椅
+做了一个难醒的梦
+网，四月和呼吸">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">自由诗</h3>
+                        <div class="work-date">2025年3月31日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+今夜只有你
+我的自由诗
+
+我要像爬山虎一样
+把全部的爱
+浸入每一寸语言
+                        </div>
+                        <a href="#" class="read-more" data-title="自由诗" data-date="2025年3月31日" data-content="今夜只有你
+我的自由诗
+
+我要像爬山虎一样
+把全部的爱
+浸入每一寸语言">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 精选作品 -->
+        <section id="featured" class="section">
+            <h2 class="section-title">精选作品</h2>
+            <div class="works-grid">
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">诗的十字架</h3>
+                        <div class="work-date">2023年10月23日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+胸腔和骨间传来阵阵灼烧
+刺痛紧逼着的血液早已冰凉
+我盲目而不能视
+身后钉死的诗的十字架
+                        </div>
+                        <a href="#" class="read-more" data-title="诗的十字架" data-date="2023年10月23日" data-content="胸腔和骨间传来阵阵灼烧
+刺痛紧逼着的血液早已冰凉
+我盲目而不能视
+身后钉死的诗的十字架
+我不能发出呻吟和挣扎
+给我饮的沒药我已无数次饮下
+没有直视这完全悲哀的勇气
+施行者或有同质的痛楚
+——或者我多虑
+毋要再施我麻痹
+毋要在施我转瞬的安宁
+我已不再能咽下那痛楚的共鸣
+赐我永恒的解脱
+赐我永恒的凋落">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">情书三则</h3>
+                        <div class="work-date">2025年5月15日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+我只想一再的亲吻你
+紧握你的双手
+抚摸你的双颊
+直视近乎灼伤我的双眼
+                        </div>
+                        <a href="#" class="read-more" data-title="情书三则" data-date="2025年5月15日" data-content="我只想一再的亲吻你
+紧握你的双手
+抚摸你的双颊
+直视近乎灼伤我的双眼
+
+我只想紧紧的拥抱你
+失掉我的过去
+失掉我的将来
+慷慨的——
+挥洒时间
+
+为你扩张一切的诗意
+为你追逐一切的尽头
+为你献祭一切的
+所有的
+最后的
+青春翩跹">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">亚述挽歌</h3>
+                        <div class="work-date">2024年12月9日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+今夜不见上帝
+世人的我
+被困在血和沙里
+无暇仰望的我
+                        </div>
+                        <a href="#" class="read-more" data-title="亚述挽歌" data-date="2024年12月9日" data-content="今夜不见上帝
+世人的我
+被困在血和沙里
+无暇仰望的我
+
+天堂若在人间
+幼发拉底这样沉默
+天堂若在天空
+忍视你遭灼灼烈火
+
+又听到你的哭泣
+人间的国
+再难找到你的痕迹
+还是没能开满玫瑰的国">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="card-header">
+                        <h3 class="work-title">花岗岩葬歌</h3>
+                        <div class="work-date">2024年4月9日</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="work-excerpt">
+壹
+你黑色翻飞的羽翼
+湖泊上波光粼粼
+闪耀着幻灭的倒影
+易碎的躯体
+何处是你嘶哑的追寻
+                        </div>
+                        <a href="#" class="read-more" data-title="花岗岩葬歌" data-date="2024年4月9日" data-content="壹
+你黑色翻飞的羽翼
+湖泊上波光粼粼
+闪耀着幻灭的倒影
+易碎的躯体
+何处是你嘶哑的追寻
+
+贰
+谁偷走了我的名字
+乌鸦在身上啄食
+透过泪光
+又见他的影子
+迟暮的眼融入悲伤
+远望是红枫扬扬
+脱下帽子挥动
+挥起昨日的哀怆
+
+叁
+哪里是航向
+坚定的手臂
+指向雾霭茫茫
+起航
+歇息的钟声已经敲响
+你走进画里
+留下我们的哀唱
+回荡
+哭泣和呻吟
+注释你的彷徨
+何方，何方
+迷惘
+
+肆
+移动着
+哐哐，哐哐
+遮掩，赤红的霞光
+坚韧的钢铁
+如何驶向你苦难的心脏
+炙热的鲜血
+再难泵入你的胸膛
+可曾记得
+喧嚣拥挤的广场
+可曾记得
+你花岗岩的眼
+在凝望
+
+伍
+倒下
+是浓烟前的高墙
+希望和理想
+一同陪葬
+遗忘，遗忘
+踟蹰而彷徨
+消散的灰烬
+映出将灭的火光
+钢铸的石像
+渗出鲜血
+西向
+赞歌不掩哭泣
+霓虹遮盖死亡">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 现代诗歌 -->
+        <section id="poetry" class="section">
+            <h2 class="section-title">现代诗歌</h2>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">共和国，你在哪</h3>
+                <span class="poem-subtitle">组诗</span>
+                <div class="poem-content">
+壹
+共和国，你在哪
+找到你的影子
+苦难，泪水，黄土地
+找到你的过去
+硝烟，残垣，进行曲
+找到你的脉搏
+朝着黄金彼岸
+挣扎的跳动
+找到你的血管
+向着胜利和胜利
+艰难的流淌
+
+贰
+行驶多久
+才会走向反面
+十年，二十，三十年
+还是永远不再的永远
+抛弃多少
+才能迎接明天
+万千包袱，万千血
+摔向模糊的从前
+
+你扼杀你的记忆（断送你的呼吸）
+摔碎我的梦（你的梦）
+谁在拼凑碎片
+残破着苟延
+
+叁
+谁不能原谅
+厉兵秣马的叫嚷
+谁不能原谅
+同样的血在流淌
+
+太久太久
+只剩同一座庙堂
+太长太长
+只剩火箭和步枪
+
+告别我的的过去
+为何还说着血债血偿
+张开你的双手
+为何还踟蹰在此方彼方
+
+梅花牡丹两个姊妹
+高山相望
+梅花牡丹两个姊妹
+泪流几行
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">起航，起航</h3>
+                <span class="poem-subtitle">追寻之歌</span>
+                <div class="poem-content">
+起航起航
+起航起航
+等我拿起我的行装
+等我带上透过蓝色玻璃看到的碎瓦墙
+
+不行不行
+我们马上就要起航
+等我带上水磨石的地砖（被拖的锃亮）
+等我留下门口浅浅的水渠（它不再流淌）
+
+快点快点
+我们马上就要起航
+等我再看眼红色的涂鸦（就那几张）
+等我再看眼阁楼和床头的玩具堆满床
+
+我什么都没能带上
+让我看看哪里是你们的黄金乡
+哪里是你们的黄金乡
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">钴蓝色舞曲</h3>
+                <span class="poem-subtitle">青春记忆</span>
+                <div class="poem-content">
+日食的那天是亲戚的葬礼
+从此知道了死亡
+在墙上的相框里
+望见被框住的自己
+
+第一首诗献给放学路上的雨
+靛黑的墨水涂上傍晚的天空
+灌满没有笔夹的自来水笔
+
+三楼的书房对着三楼的窗
+透过钴蓝的玻璃吸引我的目光
+阳光蒙上模糊的眼翳
+
+门口是两把木椅
+做了一个难醒的梦
+网，四月和呼吸
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">诗的十字架</h3>
+                <span class="poem-subtitle">创作之痛</span>
+                <div class="poem-content">
+胸腔和骨间传来阵阵灼烧
+刺痛紧逼着的血液早已冰凉
+我盲目而不能视
+身后钉死的诗的十字架
+我不能发出呻吟和挣扎
+给我饮的沒药我已无数次饮下
+没有直视这完全悲哀的勇气
+施行者或有同质的痛楚
+——或者我多虑
+毋要再施我麻痹
+毋要在施我转瞬的安宁
+我已不再能咽下那痛楚的共鸣
+赐我永恒的解脱
+赐我永恒的凋落
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">自由诗</h3>
+                <span class="poem-subtitle">情书</span>
+                <div class="poem-content">
+浸满土腥的天气
+阵阵热浪
+厌倦连绵的雨滴
+水花绽放
+
+总想要抓住
+模糊的晚风残阳
+在无名的夏夜
+抛下全部全部的诗章
+
+多少思绪飘散飞杨
+绞尽脑汁几行
+一笔一划又刻满了
+你的模样
+
+所有所有的日子
+就这样慵懒着盼望
+所有所有的爱意
+还要不厌其烦的讲
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">亚述挽歌</h3>
+                <span class="poem-subtitle">文明之殇</span>
+                <div class="poem-content">
+今夜不见上帝
+世人的我
+被困在血和沙里
+无暇仰望的我
+
+天堂若在人间
+幼发拉底这样沉默
+天堂若在天空
+忍视你遭灼灼烈火
+
+又听到你的哭泣
+人间的国
+再难找到你的痕迹
+还是没能开满玫瑰的国
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">花岗岩葬歌</h3>
+                <span class="poem-subtitle">组诗</span>
+                <div class="poem-content">
+壹
+你黑色翻飞的羽翼
+湖泊上波光粼粼
+闪耀着幻灭的倒影
+易碎的躯体
+何处是你嘶哑的追寻
+
+贰
+谁偷走了我的名字
+乌鸦在身上啄食
+透过泪光
+又见他的影子
+迟暮的眼融入悲伤
+远望是红枫扬扬
+脱下帽子挥动
+挥起昨日的哀怆
+
+叁
+哪里是航向
+坚定的手臂
+指向雾霭茫茫
+起航
+歇息的钟声已经敲响
+你走进画里
+留下我们的哀唱
+回荡
+哭泣和呻吟
+注释你的彷徨
+何方，何方
+迷惘
+
+肆
+移动着
+哐哐，哐哐
+遮掩，赤红的霞光
+坚韧的钢铁
+如何驶向你苦难的心脏
+炙热的鲜血
+再难泵入你的胸膛
+可曾记得
+喧嚣拥挤的广场
+可曾记得
+你花岗岩的眼
+在凝望
+
+伍
+倒下
+是浓烟前的高墙
+希望和理想
+一同陪葬
+遗忘，遗忘
+踟蹰而彷徨
+消散的灰烬
+映出将灭的火光
+钢铸的石像
+渗出鲜血
+西向
+赞歌不掩哭泣
+霓虹遮盖死亡
+                </div>
+            </div>
+        </section>
+        
+        <!-- 古体诗词 -->
+        <section id="classical" class="section">
+            <h2 class="section-title">古体诗词</h2>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">秋望</h3>
+                <span class="poem-subtitle">秋日感怀</span>
+                <div class="poem-content">
+今夕何夕孤月轮，桂阴衬脂沾薄唇
+仰首举杯成三影，望极天涯共一樽
+墨云披纱掩良辰，他乡别景忆斯人
+斯人已付东流水，萧瑟笙歌醉江城
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">南歌子双调</h3>
+                <span class="poem-subtitle">读史感怀</span>
+                <div class="poem-content">
+几度斜阳暖，寻常老树寒
+纷繁红木转飘残，莫怪多情难寄又凭栏
+逆旅弦歌滥，浮生琐事烦
+昨年旧事付流潺，应是云轻风淡惹潸然
+                </div>
+            </div>
+            
+            <div class="poem-reader">
+                <h3 class="poem-title">烛影摇红</h3>
+                <span class="poem-subtitle">夏日所思</span>
+                <div class="poem-content">
+轻墨难羁，几斤碎字凭白响
+窣窣蝉翼怎堪停，何恨将思量
+几度斜阳进眶，雨淅淅
+湍流涨降，可堪回顾
+不解春岚，前途且长
+抖擞精神，奋发岂教徒惆怅
+光阴虚度廿余年，催赶多一晌
+需到秋高气爽，再临江
+横涛湃浪，古今多少
+意气洋洋，迎头而上
+                </div>
+            </div>
+        </section>
+        
+        <!-- 创作年表 -->
+        <section id="timeline" class="section">
+            <h2 class="section-title">创作年表</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2016</div>
+                        <h3 class="timeline-title">创作起点</h3>
+                        <p class="timeline-excerpt">以《雨》开启诗歌创作之路，认识诗歌也认识自己</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021</div>
+                        <h3 class="timeline-title">探索期</h3>
+                        <p class="timeline-excerpt">以《伊卡诺斯》为界，开始长期稳定的诗歌创作</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <h3 class="timeline-title">成熟期</h3>
+                        <p class="timeline-excerpt">创作《钴蓝色舞曲》《诗的十字架》等代表作，形成独特风格</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2024</div>
+                        <h3 class="timeline-title">社会关怀</h3>
+                        <p class="timeline-excerpt">创作《花岗岩葬歌》《共和国，你在哪》等具有社会深度的组诗</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025</div>
+                        <h3 class="timeline-title">情感探索</h3>
+                        <p class="timeline-excerpt">创作《情书三则》《自由诗》等情感主题作品，风格尝试</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 关于棫朴 -->
+        <section id="about" class="section">
+            <h2 class="section-title">关于棫朴</h2>
+            <div class="poem-reader">
+                <h3 class="poem-title">诗人自述</h3>
+                <div class="poem-content" style="line-height:1.8;">
+我总这样说，我的字和我本身无非只是抒情、慷慨和死亡这三个词的集合。
+
+抒情生出我的爱，希望，愤怒和悲哀。
+慷慨生出我的热忱，生出我的浪漫。
+死亡变成我的倦怠，痛苦和绝望，生出我的软弱和鄙劣。
+
+所以我要把我的全部拼成我的诗，再姑且用我的丑陋拼出我自己。
+所以我要把我的眼泪留给别人，再姑且抹掉我自己。
+
+——摘自《杂感》2024年7月20日
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; max-width: 800px;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent-color);">创作理念</h3>
+                <p style="margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem;">
+棫朴的诗歌语言富有现代性又蕴含古典韵味，在自由诗与古体诗之间游刃有余。他的创作扎根于个体生命体验，同时敏锐地捕捉时代精神。从个人情感到社会观察，从存在之思到历史之问，棫朴的诗歌构建了一个丰富而立体的诗意世界。
+                </p>
+                <p style="margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem;">
+在创作中，棫朴特别注重语言的精准与意象的创新。他常以"翅膀"、"十字架"、"黄金乡"等核心意象，编织出关于自由、创作与追寻的隐喻网络。其诗歌既有抒情之美，又具思想之深，形成了独特的个人风格。
+                </p>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 诗歌全文模态框 -->
+    <div class="modal" id="poemModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 class="modal-poem-title" id="modalTitle"></h3>
+            <span class="modal-poem-date" id="modalDate"></span>
+            <div class="modal-poem-content" id="modalContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 导航切换功能
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 更新活动状态
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 隐藏所有部分
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // 显示目标部分
+                const target = this.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+                
+                // 滚动到顶部
+                window.scrollTo(0, 0);
+            });
+        });
+        
+        // 模态框功能
+        const modal = document.getElementById('poemModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDate = document.getElementById('modalDate');
+        const modalContent = document.getElementById('modalContent');
+        const closeBtn = document.querySelector('.close-modal');
+        
+        // 打开模态框
+        document.querySelectorAll('.read-more').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalTitle.textContent = this.getAttribute('data-title');
+                modalDate.textContent = this.getAttribute('data-date');
+                modalContent.textContent = this.getAttribute('data-content');
+                modal.style.display = 'flex';
+            });
+        });
+        
+        // 关闭模态框
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
